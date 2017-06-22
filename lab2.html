@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html ng-app = "Manipulador de Series">
+<head> 
+    <title>soTeste</title>
+    <meta charset = "utf-8">
+    <link rel="stylesheet" type="text/css" href="bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/design.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/controller.js"></script>
+</head>
+<body ng-controller="controller">
+    <div id="header">
+        <h1>{{app}}</h1>
+        <input class="from-control" type="search" ng-model="serie" placeholder="Digite o nome da série"/>
+        <button class="btn" ng-click="pesquisarSerie(serie)" ng-disabled="!serie">Pesquisar</button>
+    </div>
+
+    <div id="content">
+        <div class "series" ng-if="existeSerie" ng-repeat="serie in tempSeries">
+            <h3>{{serie.Title}}</h3>
+            <h3>{{serie.Year}}</h3>
+            <img ng-src={{serie.Poster}}>
+
+        
+    </div>
+
+    <div id="foot">
+    </div>
+</body>
+</html>
