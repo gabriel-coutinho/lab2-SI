@@ -9,8 +9,9 @@ app.controller("controller", function($scope, $http) {
 
         $http.get("http://www.omdbapi.com/?s="+serie+"&type=series&apikey=93330d3c").then(successCallback, errorCallback);
             $scope.existeSerie = false;
+       
             function successCallback(response) {
-                console.log(response);
+                console.log($scope.seriesPerfil);
             
                 if(response.data.Response === "False") {
                     alert("Série não encontrada!");
@@ -21,12 +22,25 @@ app.controller("controller", function($scope, $http) {
                 }
             }
             function errorCallback(error) {
-                console.log("erro");
+                alert("erro");
             }
 
+    }
 
-
-
-
-            }
+    $scope.adcPerfil = function(serie) {
+        $scope.contem = false;
+        $scope.i = 0;
+        for (var index = 0; index < $scope.seriesPerfil.length; index++) {
+            var element = $scope.seriesPerfil[index];
+            if(element === serie) {
+                $scope.contem = true;
+            } 
+        }
+        if(!$scope.contem) {
+            $scope.seriesPerfil.push(serie);
+        } else{
+            alert("A série já está no perfil.");
+        }
+    }
+    
     })

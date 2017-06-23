@@ -3,7 +3,7 @@
 <head> 
     <title>soTeste</title>
     <meta charset = "utf-8">
-    <link rel="stylesheet" type="text/css" href="bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/design.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
@@ -11,6 +11,7 @@
     <script src="js/controller.js"></script>
 </head>
 <body ng-controller="controller">
+    <!cabecalho com barra e botao de pesquisa>
     <div id="header">
         <h1>{{app}}</h1>
         <input class="from-control" type="search" ng-model="serie" placeholder="Digite o nome da série"/>
@@ -22,6 +23,8 @@
             <h3>{{serie.Title}}</h3>
             <h3>{{serie.Year}}</h3>
             <img ng-src={{serie.Poster}}>
+            <button class="btn" ng-click="adcPerfil(serie)">Adicionar ao Perfil</button>
+            <button class="btn" ng-click="adcWatchlist(serie)">Adicionar a Watchlist</button>
 
         
     </div>
