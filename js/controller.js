@@ -32,7 +32,7 @@ app.controller("controller", function($scope, $http) {
         $scope.i = 0;
         for (var index = 0; index < $scope.seriesPerfil.length; index++) {
             var element = $scope.seriesPerfil[index];
-            if(element === serie) {
+            if(element.imdbID === serie.imdbID) {
                 $scope.contem = true;
             } 
         }
