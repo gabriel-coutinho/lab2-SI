@@ -5,7 +5,7 @@ app.controller("controller", function($scope, $http) {
     $scope.tempSeries = [];
     $scope.existeSerie;
     $scope.caracteristicas;
-    $scope.requisicao;
+    $scope.minhasSeries
 
     $scope.pesquisarSerie = function(serie) {
 
@@ -37,15 +37,20 @@ app.controller("controller", function($scope, $http) {
             } 
         }
         if(!$scope.contem) {
-            $scope.seriesPerfil.push(serie);
-        } else{
+             $http.get("http://www.omdbapi.com/?i="+serie.imdbID+"&plot=full&apikey=93330d3c").then(successCallback, errorCallback);
+            function successCallback(response) {
+                 $scope.seriesPerfil.push(response.data);
+            }
+            function errorCallback(error) {
+                alert(error);
+        }} else{
             alert("A série já está no perfil.");
         }
     }
 
     $scope.imprimeCaracteristicas = function(serie) {
         $scope.caracteristicas = "";
-        $scope.pegaCaracteristicas(serie);
+        $scope.pegaCaracteristicas($scope.achaSeriePerfil(serie));
         alert($scope.caracteristicas);
     }
 
@@ -53,19 +58,22 @@ app.controller("controller", function($scope, $http) {
 
         console.log($scope.fazRequisicao(serie));
         $scope.caracteristicas += "Título: " + " ";
-        $scope.caracteristicas += $scope.fazRequisicao(serie).Title + "\n";
+        $scope.caracteristicas += serie.Title + "\n";
         $scope.caracteristicas += "Ano: " + " ";
         $scope.caracteristicas += serie.Year + "\n";
         $scope.caracteristicas += "Classificação etária: " + " ";
-        
+        $scope.caracteristicas += serie.Rated + "\n";
+        $scope.caracteristicas += "Média: " + " ";
+        $scope.caracteristicas += serie.imdbRating + "\n";
         $scope.caracteristicas += "Sinopse: " + " ";
+        $scope.caracteristicas += serie.Plot;
+
         
     }
 
     $scope.fazRequisicao = function(serie) {
-        $http.get("http://www.omdbapi.com/?i="+serie.imdbID+"&type=series&apikey=93330d3c").then(successCallback, errorCallback);
+        $http.get("http://www.omdbapi.com/?i="+serie.imdbID+"&plot=full&apikey=93330d3c").then(successCallback, errorCallback);
             function successCallback(response) {
-                console.log(response.data);
                 return response.data;
             }
             function errorCallback(error) {
@@ -83,5 +91,15 @@ app.controller("controller", function($scope, $http) {
     $scope.removeSeriePerfil = function(serie) {
         var posicaoSerie = $scope.seriesPerfil.indexOf(serie);
         $scope.seriesPerfil.splice(posicaoSerie, 1);
+    }
+
+    $scope.achaSeriePerfil = function(serie) {
+        for (var index = 0; index < $scope.seriesPerfil.length; index++) {
+            var element = $scope.seriesPerfil[index];
+            if (element === serie) {
+                return element;
+            }
+            
+        }
     }
     })
