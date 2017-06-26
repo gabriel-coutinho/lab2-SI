@@ -1,20 +1,25 @@
 <!DOCTYPE html>
-<html ng-app = "Manipulador de Series">
-<head> 
+<html ng-app="Manipulador de Series">
+
+<head>
     <title>ManipuladorSeries</title>
-    <meta charset = "utf-8">
+    <meta charset="utf-8">
+    <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/design.css">
-     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster" />
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script src="js/app.js"></script>
     <script src="js/controller.js"></script>
 </head>
+
 <body ng-controller="controller">
     <!cabecalho com barra e botao de pesquisa>
+    <div id="tudo">
     <div id="header">
-        
+
         <nav id="menu">
             <ul>
                 <h1>{{app}}</h1>
@@ -22,37 +27,37 @@
                 <li><a href="#">Perfil</a></li>
                 <li><a href="#">Watchlist</a></li>
                 <li><a href="#">Contato</a></li>
-                <input class="from-control" type="search" ng-model="serie" placeholder="Digite o nome da série"/>
+                <input class="from-control" type="search" ng-model="serie" placeholder="Digite o nome da série" />
                 <button class="btn" ng-click="pesquisarSerie(serie)" ng-disabled="!serie">Pesquisar</button>
             </ul>
 
         </nav>
 
     </div>
-    
-    <div id="content">
-
-        
-        <div class="seriesPerfil" ng-repeat="serie in seriesPerfil">
-            <h4>Séries do Perfil</h4>
+    <div id="content" class="row">
+       <div class="col-md-4" ng-if="existeSerie" ng-repeat="serie in tempSeries">
+            <h5>{{serie.Title}}</h5>
+            <h5>{{serie.Year}}</h5>
+            <img ng-src={{serie.Poster}}>
+            <p><button class="btn" ng-click="adcPerfil(serie)">Adicionar ao Perfil</button></p>
+            <p><button class="btn" ng-click="adcWatchlist(serie)">Adicionar a Watchlist</button></p>
+            <p></p>
+            <p></p>
+        </div>
+        <p><h4>Séries do Perfil</h4></p>
+        <div class="col-sm-6" ng-repeat="serie in seriesPerfil">
             <h5>{{serie.Title}}</h5>
             <img ng-src={{serie.Poster}}>
             <button class="btn" ng-click="imprimeCaracteristicas(serie)">Ver características</button>
             <button class="btn" ng-click="removePerfil(serie)">Remover série</button>
         </div>
-
-        <div class="seriesBusca" ng-if="existeSerie" ng-repeat="serie in tempSeries">
-            <h3>{{serie.Title}}</h3>
-            <h3>{{serie.Year}}</h3>
-            <img ng-src={{serie.Poster}}>
-            <button class="btn" ng-click="adcPerfil(serie)">Adicionar ao Perfil</button>
-            <button class="btn" ng-click="adcWatchlist(serie)">Adicionar a Watchlist</button>
-
-        
     </div>
 
     <div id="foot">
 
     </div>
+    </div>
+
 </body>
+
 </html>

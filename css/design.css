@@ -32,3 +32,8 @@
 body {  
     background-color: burlywood;
 }
+
+#content img{
+    height: 200px;
+    width: 160px;
+}
