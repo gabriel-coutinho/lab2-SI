@@ -42,7 +42,6 @@ app.controller("controller", function($scope, $http) {
         } else {
             $http.get("http://www.omdbapi.com/?i="+serie.imdbID+"&plot=full&apikey=93330d3c").then(successCallback, errorCallback);
             function successCallback(response) {
-                console.log(response.data);
                 response.data.notaPessoa = "-";
                 response.data.ultimoEp = "-";
                  $scope.seriesPerfil.push(response.data);
