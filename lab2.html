@@ -4,58 +4,138 @@
 <head>
     <title>ManipuladorSeries</title>
     <meta charset="utf-8">
-    <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
     <link rel="stylesheet" type="text/css" href="css/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/design.css">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster" />
 
+    <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script src="js/app.js"></script>
     <script src="js/controller.js"></script>
 </head>
 
 <body ng-controller="controller">
-    <!cabecalho com barra e botao de pesquisa>
+
     <div id="tudo">
-    <div id="header">
 
-        <nav id="menu">
-            <ul>
-                <h1>{{app}}</h1>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Perfil</a></li>
-                <li><a href="#">Watchlist</a></li>
-                <li><a href="#">Contato</a></li>
-                <input class="from-control" type="search" ng-model="serie" placeholder="Digite o nome da série" />
-                <button class="btn" ng-click="pesquisarSerie(serie)" ng-disabled="!serie">Pesquisar</button>
-            </ul>
 
-        </nav>
+        <section id="home">
+            <nav id="menu">
+                <ul>
+                    <h1>{{app}}</h1>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#perfil">Perfil</a></li>
+                    <li><a href="#watchlist">Watchlist</a></li>
+                    <input type="text" id="txtSearch" class="from-control" ng-model="serie" placeholder="Digite o nome da série"
+                        onkeypress="return searchKeyPress(event);" />
+                    <button class="btn" type="button" id="btnSearch" Value="Buscar" ng-click="pesquisarSerie(serie)"
+                        ng-disabled="!serie">Pesquisar</button>
+                    <script>
+                        function searchKeyPress(e) {
+                            e = e || window.event;
+                            if (e.keyCode == 13) {
+                                document.getElementById('btnSearch').click();
+                                return false;
+                            }
+                            return true;
+                        }
 
-    </div>
-    <div id="content" class="row">
-       <div class="col-md-4" ng-if="existeSerie" ng-repeat="serie in tempSeries">
-            <h5>{{serie.Title}}</h5>
-            <h5>{{serie.Year}}</h5>
-            <img ng-src={{serie.Poster}}>
-            <p><button class="btn" ng-click="adcPerfil(serie)">Adicionar ao Perfil</button></p>
-            <p><button class="btn" ng-click="adcWatchlist(serie)">Adicionar a Watchlist</button></p>
-            <p></p>
-            <p></p>
+                    </script>
+                </ul>
+
+            </nav>
+        </section>
+        <div id="pesquisa" class="row">
+            <div class="col-md-4" ng-if="existeSerie" ng-repeat="serie in tempSeries" id="pesquisa">
+                <p></p>
+                <h5>{{serie.Title}}</h5>
+                <h6>{{serie.Year}}</h6>
+                <img src="{{serie.Poster !== 'N/A' ? serie.Poster:'css/semImagem.gif'}}">
+                <p></p>
+                <p><button class="btn" ng-click="adcPerfil(serie)">Adicionar ao Perfil</button></p>
+                <p><button class="btn" ng-click="adcWatchlist(serie)">Adicionar a Watchlist</button></p>
+                <p></p>
+                <p></p>
+            </div>
         </div>
-        <p><h4>Séries do Perfil</h4></p>
-        <div class="col-sm-6" ng-repeat="serie in seriesPerfil">
-            <h5>{{serie.Title}}</h5>
-            <img ng-src={{serie.Poster}}>
-            <button class="btn" ng-click="imprimeCaracteristicas(serie)">Ver características</button>
-            <button class="btn" ng-click="removePerfil(serie)">Remover série</button>
+
+
+        <section id="perfil">
+            <div id="content" ng-if="existeSeriePerfil()">
+                <h4>Suas series:</h4>
+                <div class="row">
+                    <div class="col-md-4" ng-repeat="serie in seriesPerfil" id="pesquisa">
+
+                        <p></p>
+                        <h5>{{serie.Title}}</h5>
+                        <h6>{{serie.Year}}</h6>
+                        <img src="{{serie.Poster !== 'N/A' ? serie.Poster:'css/semImagem.gif'}}">
+                        <p></p>
+                        <p></p>
+                        <button type="button" class="btn" data-toggle="modal" data-target="#myModal{{$index}}">Ver características</button>
+                        <div class="modal fade" id="myModal{{$index}}" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    </div>
+                                    <div class="modal-body">
+                                        <h5>Título: {{serie.Title}}</h5>
+                                        <h5>Duração: {{serie.Year}}</h5>
+                                        <h5>Classificação etária: {{serie.Rated}}</h5>
+                                        <h5>Média: {{serie.imdbRating}}</h5>
+                                        <h5>Sua nota: {{serie.notaPessoa}}</h5>
+                                        <h5>Último episódio: {{serie.ultimoEp}}</h5>
+                                        <h5>Sinopse: {{serie.Plot}}</h5>
+                                        <input type="text" class="from-control" ng-model="nota" placeholder="Digite sua nota" />
+                                        <button class="btn" type="button" Value="Nota" ng-click="mudaNota(serie, nota)" ng-disabled="!nota">Adicionar nota</button>
+                                        <input type="text" class="from-control" ng-model="episodio" placeholder="Digite o episódio" />
+                                        <button class="btn" type="button" Value="Episodio" ng-click="mudaEpisodio(serie, episodio)" ng-disabled="!episodio">Mudar episódio</button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <p></p>
+                        <button class="btn" ng-click="removePerfil(serie)">Remover série</button>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="watchlist">
+            <div id="content" ng-if="existeSerieWatchlist()">
+                <h4>Watchlist:</h4>
+                <div class="row">
+                    <div class="col-md-4" ng-repeat="serie in seriesWatchlist" id="pesquisa">
+
+                        <p></p>
+                        <h5>{{serie.Title}}</h5>
+                        <h6>{{serie.Year}}</h6>
+                        <img src="{{serie.Poster !== 'N/A' ? serie.Poster:'css/semImagem.gif'}}">
+                        <p></p>
+                        <button class="btn" ng-click="adcPerfil(serie)">Adicionar ao Perfil</button>
+                        <p></p>
+                        <button class="btn" ng-click="removeWatchlist(serie)">Remover série</button>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <div id="foot">
+
         </div>
-    </div>
-
-    <div id="foot">
-
-    </div>
     </div>
 
 </body>
