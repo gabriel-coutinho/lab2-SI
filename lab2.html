@@ -30,10 +30,9 @@
                     <li><a href="#home">Home</a></li>
                     <li><a href="#perfil">Perfil</a></li>
                     <li><a href="#watchlist">Watchlist</a></li>
-                    <input type="text" id="txtSearch" class="from-control" ng-model="serie" placeholder="Digite o nome da série"
-                        onkeypress="return searchKeyPress(event);" />
-                    <button class="btn" type="button" id="btnSearch" Value="Buscar" ng-click="pesquisarSerie(serie)"
-                        ng-disabled="!serie">Pesquisar</button>
+                    <input type="text" id="txtSearch" class="from-control" ng-model="serie" placeholder="Digite o nome da série" onkeypress="return searchKeyPress(event);"
+                    />
+                    <button class="btn" type="button" id="btnSearch" Value="Buscar" ng-click="pesquisarSerie(serie)" ng-disabled="!serie">Pesquisar</button>
                     <script>
                         function searchKeyPress(e) {
                             e = e || window.event;
@@ -43,7 +42,6 @@
                             }
                             return true;
                         }
-
                     </script>
                 </ul>
 
@@ -81,9 +79,10 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
+                                        <h5>{{serie.Title}}</h5>
                                     </div>
                                     <div class="modal-body">
-                                        <h5>Título: {{serie.Title}}</h5>
+                                        <img src="{{serie.Poster !== 'N/A' ? serie.Poster:'css/semImagem.gif'}}">
                                         <h5>Duração: {{serie.Year}}</h5>
                                         <h5>Classificação etária: {{serie.Rated}}</h5>
                                         <h5>Média: {{serie.imdbRating}}</h5>
@@ -92,6 +91,17 @@
                                         <h5>Sinopse: {{serie.Plot}}</h5>
                                         <input type="text" class="from-control" ng-model="nota" placeholder="Digite sua nota" />
                                         <button class="btn" type="button" Value="Nota" ng-click="mudaNota(serie, nota)" ng-disabled="!nota">Adicionar nota</button>
+                                        <script>
+                                            function searchKeyPress(e) {
+                                                e = e || window.event;
+                                                if (e.keyCode == 13) {
+                                                    document.getElementById('btnSearch').click();
+                                                    return false;
+                                                }
+                                                return true;
+                                            }
+                                        </script>
+                                        <p></p>
                                         <input type="text" class="from-control" ng-model="episodio" placeholder="Digite o episódio" />
                                         <button class="btn" type="button" Value="Episodio" ng-click="mudaEpisodio(serie, episodio)" ng-disabled="!episodio">Mudar episódio</button>
                                     </div>
